@@ -49,6 +49,7 @@ public class PruebaBD {
 		} catch (SQLException e) {
                         System.out.println(e.getMessage());
 			JOptionPane.showMessageDialog(null, "No se Registro");
-		}            
+		} 
+		
   }
 }
