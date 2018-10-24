@@ -33,6 +33,22 @@ public class PruebaBD {
            System.out.println(e);
         }catch(ClassNotFoundException e){
            System.out.println(e);
-        }           
+        }
+                
+               //insertar en la base de datos
+
+    		try {
+   	             Statement st = conn.createStatement();
+                     String sql = "INSERT INTO persona VALUES ("+ 22222+","+
+                                  "'Ana Machado'"+","+22+","+"'Empleada'"+
+                                  ","+86712345+")";
+                        st.executeUpdate(sql);
+
+                        st.close();
+			
+		} catch (SQLException e) {
+                        System.out.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, "No se Registro");
+		}            
   }
 }
