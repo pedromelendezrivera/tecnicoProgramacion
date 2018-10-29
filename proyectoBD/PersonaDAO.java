@@ -41,7 +41,8 @@ public class PersonaDAO {
     
     
  	public PersonaVO buscarPersona(int codigo) 
-	{
+	{   
+            boolean existe=false;
             PersonaVO persona= new PersonaVO();
             Conexion conex= new Conexion(); 
             PreparedStatement pst = null; 
@@ -51,6 +52,7 @@ public class PersonaDAO {
             pst.setInt(1, codigo);
             ResultSet res = pst.executeQuery();
             while(res.next()){
+                existe = true;
                 persona.setIdPersona(Integer.parseInt(res.getString("id")));
                 persona.setNombrePersona(res.getString("nombre"));
                 persona.setEdadPersona(Integer.parseInt(res.getString("edad")));
@@ -61,7 +63,10 @@ public class PersonaDAO {
              conex.desconectar();
         } catch (SQLException ex) { 
       		JOptionPane.showMessageDialog(null, "Error, no se conecto");}
-	    			
+	 if (existe == false) {
+		persona = null;
+            }
+			  			
         return persona;
         }
         
@@ -84,6 +89,22 @@ public class PersonaDAO {
             JOptionPane.showMessageDialog(null,"Error de conecion a la BD");
          }      
   }
+        public void eliminarPersona(int id){
+            Conexion conex = new Conexion();
+            PreparedStatement pst = null;
+            String sql = "DELETE FROM persona WHERE id = ?";
+        try {
+            pst = conex.getConnection().prepareStatement(sql);
+            pst.setInt(1, id);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null,"Registro eliminado");
+            conex.getConnection().close();
+            conex.desconectar();
+        } catch (SQLException ex) {  
+         JOptionPane.showMessageDialog(null,"error de conexion a la bd");
+         }
+            
+        } 
         
     
             
