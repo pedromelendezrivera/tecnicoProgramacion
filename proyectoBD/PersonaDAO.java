@@ -35,5 +35,22 @@ public class PersonaDAO {
                                               JOptionPane.INFORMATION_MESSAGE);
            }
     }
+    
+     	public PersonaVO buscarPersona(int codigo) 
+	{
+            PersonaVO persona= new PersonaVO();
+            Conexion conex= new Conexion(); 
+            PreparedStatement pst = null; 
+            String sql = "SELECT * FROM persona where id = ? ";
+        try {
+            pst = conex.getConnection().prepareStatement(sql);
+            pst.setInt(1, codigo);
+            
+        } catch (SQLException ex) { 
+      		JOptionPane.showMessageDialog(null, "Error, no se conecto");}
+	    			
+	
+        return persona;
+        } 
             
 }
