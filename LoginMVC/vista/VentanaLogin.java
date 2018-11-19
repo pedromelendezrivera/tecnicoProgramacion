@@ -1,16 +1,10 @@
 package vista;
 
-import controlador.ControladorLogin;
-import controlador.Hash;
+import controlador.CoordinadorLogin;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
 import javax.swing.*;
-import modelo.dao.UsuarioDao;
-import modelo.vo.UsuarioVo;
 
-public class VentanaLogin extends JFrame implements ActionListener{
+public class VentanaLogin extends JFrame {
 
     public javax.swing.JButton btnEntrar;
     private javax.swing.JLabel jLabel1;
@@ -18,7 +12,7 @@ public class VentanaLogin extends JFrame implements ActionListener{
     public javax.swing.JPasswordField txtPassword;
     public javax.swing.JTextField txtUsuario;
     
-    private ControladorLogin controladorLogin; 
+    private CoordinadorLogin coordinadorLogin; 
 
     public VentanaLogin() {
         initComponents();
@@ -58,52 +52,16 @@ public class VentanaLogin extends JFrame implements ActionListener{
         btnEntrar.setFont(new Font("Tahoma", 0, 18)); // NOI18N
         btnEntrar.setText("Entrar");
         btnEntrar.setBounds(300, 350, 150, 50);
-        btnEntrar.addActionListener(this);
         add(btnEntrar);
 
     }
     
     
     
-      	public void setCoordinadorLogin(ControladorLogin coordinadorLogin) {
-		this.controladorLogin = coordinadorLogin;
+      	public void setCoordinadorLogin(CoordinadorLogin coordinadorLogin) {
+		this.coordinadorLogin = coordinadorLogin;
 	}
 
-
-    public void actionPerformed(ActionEvent e) {
-   		if (e.getSource()==btnEntrar) {
-                        //getPassword es un array tipo char se debe convertir en String
-//                    VentanaMenuPrincipal VentanaMenuPrincipal = new VentanaMenuPrincipal();  
-		    UsuarioDao usuarioDao = new UsuarioDao();
-                    UsuarioVo mod = new UsuarioVo();      
-  
-                    String pass = new String(txtPassword.getPassword());
-         
-                    if (!txtUsuario.getText().equals("") && !pass.equals("")) {
-                         String nuevoPass = Hash.sha1(pass);
-                         
-                         mod.setUsuario(txtUsuario.getText());
-                         mod.setPassword(nuevoPass);          
-                    
-                         if (usuarioDao.login(mod)) {
-
-                             this.dispose();
-                             VentanaMenuPrincipal VentanaMenuPrincipal = new VentanaMenuPrincipal();  
-
-                             VentanaMenuPrincipal.setVisible(true);
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Datos incorrectos");
-                            limpiar();
-                        }
-                        } else {
-                           JOptionPane.showMessageDialog(null, "Debe ingresar sus datos");
-                       }
-                }
-    }
-     
-    private void limpiar() {
-        txtUsuario.setText("");
-        txtPassword.setText("");
-    }
-
 }
+
+
