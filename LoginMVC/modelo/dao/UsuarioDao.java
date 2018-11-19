@@ -9,12 +9,45 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import modelo.conexion.Conexion;
 import modelo.vo.UsuarioVo;
-import vista.VentanaMenuPrincipal;
+//import vista.VentanaMenuPrincipal;
 /**
  *
  * @author PMELENDEZ
  */
 public class UsuarioDao {
+    
+       public boolean loginUsuario(UsuarioVo usuarioVo)
+       {
+		Conexion conex= new Conexion();
+                PreparedStatement pst = null; 
+                
+                String sql = "SELECT id, usuario, password, nombre, id_tipo FROM usuarios WHERE usuario = ? LIMIT 1";
+                try{
+                    pst = conex.getConnection().prepareStatement(sql);
+ 		    pst.setString(1, usuarioVo.getUsuario());
+		    ResultSet res = pst.executeQuery();                   
+                    if(res.next()){
+                        if(usuarioVo.getPassword().equals(res.getString(3))){
+//                           usuarioVo.setId(res.getInt(1));
+//                           usuarioVo.setNombre(res.getString(4));
+//                           usuarioVo.setIdTipo(res.getInt(5));
+                           return true;
+                        } else return false;
+                    }
+                   
+                    
+                } catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Error, no se conecto");
+				System.out.println(e);
+                }
+                 return false;                
+       }
+               
+    
+    
+    
+    
+    
     
     	public UsuarioVo buscarUsuario(UsuarioVo usuarioVo) 
 	{
