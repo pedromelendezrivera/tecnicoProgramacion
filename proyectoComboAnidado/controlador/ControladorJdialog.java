@@ -1,5 +1,7 @@
 package controlador;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Connection;
@@ -11,7 +13,7 @@ import javax.swing.JOptionPane;
 import modelo.Conexion;
 import vista.VistaJDialog;
 
-public class ControladorJdialog implements ItemListener{
+public class ControladorJdialog implements ItemListener, ActionListener{
     VistaJDialog vistaJDialog;
     DefaultComboBoxModel modeloDepartamentos;
     DefaultComboBoxModel modeloMunicipos;
@@ -23,6 +25,7 @@ public class ControladorJdialog implements ItemListener{
            llena_departamentos();
            llenar_municipios();
            this.vistaJDialog.jComboDepartamento.addItemListener(this); 
+           this.vistaJDialog.jButtonLeer.addActionListener(this);
            this.vistaJDialog.setLocationRelativeTo(null);
            this.vistaJDialog.setVisible(true);
     }
@@ -98,6 +101,14 @@ public class ControladorJdialog implements ItemListener{
         } catch (SQLException ex) {
            JOptionPane.showMessageDialog(null, ex.toString());
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+         String departamento = this.vistaJDialog.jComboDepartamento.getSelectedItem().toString();
+         String municipio = this.vistaJDialog.jComboMunicipio.getSelectedItem().toString();
+         this.vistaJDialog.jTextDepartamento.setText(departamento);
+         this.vistaJDialog.jTextMunicipio.setText(municipio);
     }
     
 }
