@@ -1,5 +1,7 @@
 package controlador;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +11,7 @@ import javax.swing.JOptionPane;
 import modelo.Conexion;
 import vista.VistaJDialog;
 
-public class ControladorJdialog {
+public class ControladorJdialog implements ItemListener{
     VistaJDialog vistaJDialog;
     DefaultComboBoxModel modeloDepartamentos;
     DefaultComboBoxModel modeloMunicipos;
@@ -20,7 +22,7 @@ public class ControladorJdialog {
            modeloMunicipos = new DefaultComboBoxModel();
            llena_departamentos();
            llenar_municipios();
-     
+           this.vistaJDialog.jComboDepartamento.addItemListener(this); 
            this.vistaJDialog.setLocationRelativeTo(null);
            this.vistaJDialog.setVisible(true);
     }
@@ -64,6 +66,38 @@ public class ControladorJdialog {
      
     }
 
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        llenar_municipios(e);
+    }
     
+    private void llenar_municipios(ItemEvent e) {
+        modeloMunicipos.removeAllElements();
+        String dep = e.getItem().toString();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection conn = new Conexion().getConnection();
+        String sql = "select id from tbl_departamentos where nombre = ?";  
+        String codDep = null;
+        try {
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,dep);
+            rs = ps.executeQuery();
+             while(rs.next()){
+               codDep = rs.getString("id");
+            }                
+            System.out.println(codDep);
+            sql = "SELECT nombre FROM tbl_municipios WHERE departamento_id =?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, codDep);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                modeloMunicipos.addElement(rs.getString("nombre"));
+            } 
+            this.vistaJDialog.jComboMunicipio.setModel(modeloMunicipos);
+        } catch (SQLException ex) {
+           JOptionPane.showMessageDialog(null, ex.toString());
+        }
+    }
     
 }
